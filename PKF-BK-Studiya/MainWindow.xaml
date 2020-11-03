@@ -1,0 +1,153 @@
+﻿<Window x:Name="RPN" x:Class="PKF_BK_Studiya.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PKF_BK_Studiya"
+        mc:Ignorable="d"
+        Title="Калькулятор" Height="430" Width="340" ResizeMode="NoResize" Foreground="{x:Null}" WindowStartupLocation="CenterScreen" Visibility="Visible" WindowStyle="ToolWindow" Background="White">
+    <Window.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#BEBEBE"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="Black"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#AAAAAA"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Window.FocusVisualStyle>
+        <Style/>
+    </Window.FocusVisualStyle>
+    <Grid HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="335" RenderTransformOrigin="0.5,0.5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="65"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="65"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="С" HorizontalAlignment="Left" Margin="10,16,0,0" VerticalAlignment="Top" Width="110" Height="45" Background="#FFFF5050" FontSize="20" FontWeight="Bold" FontFamily="Arial Black" Click="ClearAll" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="InputBox" Grid.Column="2" HorizontalAlignment="Left" Height="110" Margin="10,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175" TextAlignment="Right" Background="#FFDDDDDD" Grid.RowSpan="2" Grid.ColumnSpan="3" FontSize="15"/>
+        <Button x:Name="Seven" Content="7" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="2" Grid.Row="2" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetSeven"/>
+        <Button x:Name="Four" Content="4" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="2" Grid.Row="3" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetFour"/>
+        <Button x:Name="One" Content="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="2" Grid.Row="4" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetOne"/>
+        <Button x:Name="Point" Content="," HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="1" Grid.Row="5" FontSize="16" FontFamily="Arial" UseLayoutRounding="False" BorderThickness="1" Click="Comma"/>
+        <Button x:Name="Plus" Content="+" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Row="2" FontSize="16" FontFamily="Arial" UseLayoutRounding="False" BorderThickness="1" Click="SetPlus" Grid.Column="1"/>
+        <Button x:Name="Multiplication" Content="*" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Row="3" FontSize="16" FontFamily="Arial" UseLayoutRounding="False" BorderThickness="1" Click="SetMultiplication" Grid.Column="1"/>
+        <Button x:Name="Divided" Content="/" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Row="3" FontSize="16" FontFamily="Arial" UseLayoutRounding="False" BorderThickness="1" Click="SetDivided"/>
+        <Button x:Name="Eight" Content="8" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="3" Grid.Row="2" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetEight"/>
+        <Button x:Name="Five" Content="5" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="3" Grid.Row="3" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetFive"/>
+        <Button x:Name="Two" Content="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="3" Grid.Row="4" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetTwo"/>
+        <Button x:Name="Zero" Content="0" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="2" Grid.Row="5" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetZero"/>
+        <Button x:Name="Nine" Content="9" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="4" Grid.Row="2" IsDefault="True" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetNine"/>
+        <Button x:Name="Six" Content="6" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="4" Grid.Row="3" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetSix"/>
+        <Button x:Name="Three" Content="3" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="4" Grid.Row="4" FontSize="16" FontFamily="Arial" Background="#FF969696" UseLayoutRounding="False" BorderThickness="1" Click="SetThree"/>
+        <Button x:Name="Equals" Content="=" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="111" Height="45" Grid.Column="3" Grid.Row="5" FontSize="20" FontFamily="Arial Black" Background="#FF5050" UseLayoutRounding="False" BorderThickness="1" Click="SetEquals" Grid.ColumnSpan="2"/>
+        <Button x:Name="Elevation" Content="x^" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Row="4" FontSize="16" FontFamily="Arial" UseLayoutRounding="False" BorderThickness="1" Click="SetElevation"/>
+        <Button x:Name="Minus" Content="-" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Row="2" FontSize="16" FontFamily="Arial" Background="#FFDDDDDD" UseLayoutRounding="False" BorderThickness="1" Click="SetMinus"/>
+        <Button x:Name="LeftBracket" Content="(" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Row="1" FontSize="16" FontFamily="Arial" Background="#FFDDDDDD" UseLayoutRounding="False" BorderThickness="1" Click="SetLeftBracket"/>
+        <Button x:Name="RightBracket" Content=")" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Column="1" Grid.Row="1" IsDefault="True" FontSize="16" FontFamily="Arial" Background="#FFDDDDDD" UseLayoutRounding="False" BorderThickness="1" Click="SetRightBracket"/>
+        <Button x:Name="Square" Content="√" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Row="4" FontSize="16" FontFamily="Arial" UseLayoutRounding="False" BorderThickness="1" Click="SetSquare" Grid.Column="1"/>
+        <Button x:Name="Percents" Content="%" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Height="45" Grid.Row="5" FontSize="16" FontFamily="Arial" UseLayoutRounding="False" BorderThickness="1" Click="Percent"/>
+    </Grid>
+</Window>
